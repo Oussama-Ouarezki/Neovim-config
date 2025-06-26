@@ -1,0 +1,9 @@
+
+{
+  "include": ["."],
+  "reportMissingImports": true,
+  "reportMissingModuleSource": false,
+  "venvPath": "~/.virtualenvs",   // adjust this if needed
+  "venv": "your-env-name",        // optional if using virtualenv
+  "pythonVersion": "3.10"
+}
