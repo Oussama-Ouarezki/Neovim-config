@@ -13,9 +13,12 @@ end, { desc = "[W]rite/Save file" })
 vim.g.have_nerd_font = true
 --theme color
 -- here are the keybinds for add new line without exsting normal mode
-vim.keymap.set("n", "<leader>o", ":put _<CR>", { desc = "Add empty line below" })
+vim.keymap.set("n", "<CR>", ":put _<CR>", { desc = "Add empty line below" })
 
-vim.keymap.set("n", "<leader>O", ":put! _<CR>", { desc = "Add empty line above" })
+vim.keymap.set("n", "<S-CR>", ":put! _<CR>", { desc = "Add empty line above" })
+
+
+
 -- Ifd you want to see the output in a split window instead
 vim.keymap.set("n", "<leader>r.", function()
   vim.cmd "w"         -- Save first
@@ -26,11 +29,16 @@ end, { noremap = true, desc = "Run Python file" })
 --tabs keybind
 --
 
--- Jump 20 lines down with Ctrl-d
-vim.keymap.set("n", "<C-d>", "7j", { silent = true ,noremap=true})
+vim.keymap.set('n', 'gg', 'gg0', { noremap = true })
+vim.keymap.set('n', 'G', 'G$', { noremap = true })
 
--- Jump 20 lines up with Ctrl-u
-vim.keymap.set("n", "<C-u>", "7k", { silent = true ,noremap=true})
+-- Disable default <C-d> and <C-u> behavior
+
+-- Custom: Jump 7 lines down with Ctrl-d
+vim.keymap.set("n", "<C-d>", "7j", { silent = true, noremap = true })
+
+-- Custom: Jump 7 lines up with Ctrl-u
+vim.keymap.set("n", "<C-u>", "7k", { silent = true, noremap = true })
 -- Jump to specific buffer
 vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<CR>")
 vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<CR>")
@@ -48,7 +56,32 @@ vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>")
 
 -- Close current buffer nicely
 vim.keymap.set("n", "<leader>c", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
-vim.keymap.set("n", "<leader>bo", "<cmd>edit #<CR>", { desc = "Reopen Last Buffer" })
+-- Stack of closed filepaths
+local closed_files = {}
+
+-- Track files closed with :bd or similar
+vim.api.nvim_create_autocmd("BufDelete", {
+  callback = function(args)
+    local name = vim.api.nvim_buf_get_name(args.buf)
+    if name and name ~= "" and vim.fn.filereadable(name) == 1 then
+      table.insert(closed_files, 1, name)
+    end
+  end,
+})
+
+-- Function to reopen the most recently closed file
+local function reopen_last_closed_file()
+  local file = table.remove(closed_files, 1)
+  if file then
+    vim.cmd("edit " .. vim.fn.fnameescape(file))
+  else
+    vim.notify("No closed files left to reopen", vim.log.levels.WARN)
+  end
+end
+
+-- Key mapping: like Firefox Ctrl+Shift+T
+vim.keymap.set("n", "<leader>bo", reopen_last_closed_file, { desc = "Reopen last closed file" })
+
 -- Make line numbers default
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
