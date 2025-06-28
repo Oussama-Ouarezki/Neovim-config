@@ -9,11 +9,14 @@ return {
       multi_window = true,
       wrap = true,
       incremental = true,
-      max_length = 5, -- Allow 2-character inputs
+      max_length = 5, -- Allow up to 5-character inputs
     },
     modes = {
       char = {
         enabled = false, -- Disable enhanced f/t motions
+      },
+      search = {
+        enabled = true, -- Enable search mode for better visual selection
       },
     },
     label = {
@@ -21,39 +24,51 @@ return {
       after = true,
       style = 'inline',
     },
+    -- Add prompt configuration for better visual feedback
+    prompt = {
+      enabled = true,
+      prefix = { { "⚡", "FlashPromptIcon" } },
+    },
   },
   keys = {
-    -- Basic jump (2-character)
+    -- Flash Jump - works in normal, visual, and operator-pending modes
     {
-      'f',
+      't',
       mode = { 'n', 'x', 'o' },
       function()
-        require('flash').jump {
-          search = {
-            mode = function(pattern)
-              return '\\<' .. pattern:sub(1, 2)
-            end,
-          },
-        }
+        require('flash').jump()
       end,
-      desc = 'Flash (2-char)',
+      desc = 'Flash Jump',
     },
+    
     -- Treesitter jump
     {
-      'F',
+      'T',
       mode = { 'n', 'x', 'o' },
       function()
         require('flash').treesitter()
       end,
       desc = 'Flash Treesitter',
-    }, -- Search integration
+    },
+    
+    -- Additional keymap for remote flash (useful for visual selections)
     {
-      't',
+      'r',
+      mode = 'o',
+      function()
+        require('flash').remote()
+      end,
+      desc = 'Remote Flash',
+    },
+    
+    -- Search and replace with flash
+    {
+      '<c-s>',
+      mode = { 'c' },
       function()
         require('flash').toggle()
-        vim.cmd.normal { '?', bang = true }
       end,
-      desc = 'Flash Search',
+      desc = 'Toggle Flash Search',
     },
   },
 }

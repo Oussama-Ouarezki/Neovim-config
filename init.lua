@@ -17,7 +17,11 @@ vim.keymap.set("n", "<CR>", ":put _<CR>", { desc = "Add empty line below" })
 
 vim.keymap.set("n", "<S-CR>", ":put! _<CR>", { desc = "Add empty line above" })
 
+vim.keymap.set("n", "f", "f", { noremap = true })
 
+-- Remap j and k to gj and gk in normal mode
+vim.keymap.set("n", "j", "gj", { noremap = true, silent = true })
+vim.keymap.set("n", "k", "gk", { noremap = true, silent = true })
 
 -- Ifd you want to see the output in a split window instead
 vim.keymap.set("n", "<leader>r.", function()
@@ -39,23 +43,24 @@ vim.keymap.set("n", "<C-d>", "7j", { silent = true, noremap = true })
 
 -- Custom: Jump 7 lines up with Ctrl-u
 vim.keymap.set("n", "<C-u>", "7k", { silent = true, noremap = true })
--- Jump to specific buffer
-vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<CR>")
-vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<CR>")
-vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<CR>")
-vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<CR>")
-vim.keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<CR>")
-vim.keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<CR>")
-vim.keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<CR>")
-vim.keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<CR>")
-vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<CR>")
+-- -- Jump to specific buffer jumping in tabs
+-- vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<CR>")
+-- vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<CR>")
+-- vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<CR>")
+-- vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<CR>")
+-- vim.keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<CR>")
+-- vim.keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<CR>")
+-- vim.keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<CR>")
+-- vim.keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<CR>")
+-- vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<CR>")
 
 -- Quickly cycle buffers
 vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>")
 
 -- Close current buffer nicely
-vim.keymap.set("n", "<leader>c", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
+
+vim.keymap.set("n", "<leader>c", "<cmd>bdelete!<CR>", { desc = "Force Close Buffer" })
 -- Stack of closed filepaths
 local closed_files = {}
 
@@ -118,7 +123,7 @@ vim.o.breakindent = true
 -- Save undo history
 vim.o.undofile = true
 
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+-- Case-insensitive searching UNLESS \C or one or more capital ketters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
@@ -653,13 +658,20 @@ require('telescope').setup{
           ---@param method vim.lsp.protocol.Method
           ---@param bufnr? integer some lsp support methods only in specific files
           ---@return boolean
-          local function client_supports_method(client, method, bufnr)
-            if vim.fn.has "nvim-0.11" == 1 then
-              return client:supports_method(method, bufnr)
-            else
-              return client.supports_method(method, { bufnr = bufnr })
-            end
-          end
+          
+vim.opt.swapfile = false
+
+          -- here the function that closes the buffer 
+local function client_supports_method(client, method, bufnr)
+  if vim.fn.has("nvim-0.11") == 1 then
+    -- In 0.11+, supports_method takes (method: string, options: { bufnr? })
+    return client:supports_method(method, { bufnr = bufnr })
+  else
+    -- In <= 0.10, supports_method is just a method: string → bool
+    return client.supports_method and client.supports_method(method)
+  end
+end
+
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -1101,6 +1113,7 @@ end, { desc = "Use BasedPyright Strict mode" })
   require "kickstart.plugins.project",
   require "kickstart.plugins.cmdline",
   require "kickstart.plugins.footer",
+require "kickstart.plugins.git"
   --require "kickstart.plugins.snacks",
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
