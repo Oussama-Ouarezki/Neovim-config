@@ -38,3 +38,4 @@ Sure! Here's a clearer and more polished version of your note:
 > This means you won't need to use your mouse to control playback.
 >
 > For images, use a lightweight viewer like **`feh`**, which also lets you quit quickly with `q`. You can set it as your default image viewer or call it directly from the terminal for smooth integration.
+https://github.com/Oussama-Ouarezki/Neovim-config/tree/main/lua/custom/plugins
