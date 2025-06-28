@@ -1,7 +1,7 @@
 
 ## 🎬 Manim Integration for Neovim
 
-This Lua module provides an enhanced Neovim workflow for [Manim](https://github.com/ManimCommunity/manim), making it easy to render scenes, choose quality settings, and replay outputs directly from the editor, youtube[https://youtu.be/8xTAmnAm_u8] explanation
+This Lua module provides an enhanced Neovim workflow for [Manim](https://github.com/ManimCommunity/manim), making it easy to render scenes, choose quality settings, and replay outputs directly from the editor, [youtube](https://youtu.be/8xTAmnAm_u8) explanation
 ### ✅ Features
 
 * Run the current scene under cursor with `-ql`, `-qh`, and optional `-s` (last frame) flags
