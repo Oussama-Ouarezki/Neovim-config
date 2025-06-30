@@ -19,6 +19,9 @@ vim.keymap.set("n", "<S-CR>", ":put! _<CR>", { desc = "Add empty line above" })
 
 vim.keymap.set("n", "f", "f", { noremap = true })
 
+-- init.lua (or lua config)
+vim.keymap.set("i", "<C-BS>", "<C-w>", { noremap = true })
+
 -- Remap j and k to gj and gk in normal mode
 vim.keymap.set("n", "j", "gj", { noremap = true, silent = true })
 vim.keymap.set("n", "k", "gk", { noremap = true, silent = true })
@@ -771,7 +774,7 @@ require("lspconfig").basedpyright.setup {
 
 
 
-vim.keymap.set("n", "<leader>md", function()
+vim.keymap.set("n", "<leader>me", function()
   require("kickstart.plugins.python_toggle").setup_manim()
 end, { desc = "Use BasedPyright Manim mode" })
 
@@ -1115,6 +1118,7 @@ end, { desc = "Use BasedPyright Strict mode" })
   require "kickstart.plugins.footer",
 require "kickstart.plugins.git",
 require "kickstart.plugins.lazygit",
+require "kickstart.plugins.indent_line",
   --require "kickstart.plugins.snacks",
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
