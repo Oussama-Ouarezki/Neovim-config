@@ -773,15 +773,6 @@ require("lspconfig").basedpyright.setup {
 }
 
 
-
-vim.keymap.set("n", "<leader>me", function()
-  require("kickstart.plugins.python_toggle").setup_manim()
-end, { desc = "Use BasedPyright Manim mode" })
-
-vim.keymap.set("n", "<leader>mt", function()
-  require("kickstart.plugins.python_toggle").setup_strict()
-end, { desc = "Use BasedPyright Strict mode" })
--- Export
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -1100,6 +1091,7 @@ end, { desc = "Use BasedPyright Strict mode" })
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   -- require 'kickstart.plugins.debug'
   -- NOTE: here is a plugin_example
+
   require "kickstart.plugins.theme", -- here  you find the satust line and  color theme
   require "kickstart.plugins.lint",
   require "kickstart.plugins.autopairs",
@@ -1119,6 +1111,8 @@ end, { desc = "Use BasedPyright Strict mode" })
 require "kickstart.plugins.git",
 require "kickstart.plugins.lazygit",
 require "kickstart.plugins.indent_line",
+-- require("kickstart.plugins.python_toggle")
+
   --require "kickstart.plugins.snacks",
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -1126,6 +1120,8 @@ require "kickstart.plugins.indent_line",
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   -- { import = 'custom.plugins' },
   --
+
+
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
