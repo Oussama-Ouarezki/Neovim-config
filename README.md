@@ -1,3 +1,14 @@
+# 1. Backup your existing Neovim config (if you have one)
+mv ~/.config/nvim ~/.config/nvim.backup
+mv ~/.local/share/nvim ~/.local/share/nvim.backup
+mv ~/.local/state/nvim ~/.local/state/nvim.backup
+mv ~/.cache/nvim ~/.cache/nvim.backup
+
+# 2. Clone your config repository
+git clone https://github.com/Oussama-Ouarezki/Neovim-config.git ~/.config/nvim
+
+# 3. Launch Neovim (plugins should install automatically)
+nvim
 
 # 🎥 Manim Neovim Plugin – Custom Shortcuts
 
